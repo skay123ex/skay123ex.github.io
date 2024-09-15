@@ -6,8 +6,7 @@
     <title>Reservas Peluquería</title>
     <script async defer src="https://apis.google.com/js/api.js"></script>
     <script>
-        let CLIENT_ID = '618182309244
--qu38gaocb6070a2oiruud4s2tsp9cevn.apps.googleusercontent.com'; // Coloca aquí tu Client ID de Google
+        let CLIENT_ID = '618182309244-qu38gaocb6070a2oiruud4s2tsp9cevn.apps.googleusercontent.com'; // Coloca aquí tu Client ID de Google correctamente
         let API_KEY = 'AIzaSyDpqu17MS6efStTqINMJvawrfsNcJt_tIU'; // Coloca aquí tu API Key de Google
 
         // Cargar la API de Google
@@ -23,6 +22,8 @@
                 scope: "https://www.googleapis.com/auth/calendar.events"
             }).then(() => {
                 document.getElementById('authorize_button').onclick = handleAuthClick;
+            }).catch((error) => {
+                console.log('Error inicializando el cliente:', error);
             });
         }
 
@@ -30,6 +31,8 @@
         function handleAuthClick() {
             gapi.auth2.getAuthInstance().signIn().then(() => {
                 createEvent();
+            }).catch((error) => {
+                console.log('Error al iniciar sesión:', error);
             });
         }
 
@@ -53,8 +56,12 @@
             });
 
             request.execute((event) => {
-                console.log('Evento creado: ' + event.htmlLink);
-                alert('Reserva confirmada: ' + event.htmlLink);
+                if (event.htmlLink) {
+                    console.log('Evento creado: ' + event.htmlLink);
+                    alert('Reserva confirmada: ' + event.htmlLink);
+                } else {
+                    console.log('Error al crear el evento.');
+                }
             });
         }
     </script>
